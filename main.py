@@ -11,10 +11,12 @@ paths.add_argument("--model_file", help='Pre-trained model file')
 
 train = parser.add_argument_group(title='Training Details')
 train.add_argument("--train", action="store_true", help="Train model")
+train.add_argument("--model_type", type=str, default='lstm', help='Model to use')
 train.add_argument("--seq_len", type=int, default=15, help='Length of input_seq')
 train.add_argument("--no_pad", action="store_false", help='Do not pad beginning of documents')
 train.add_argument("--embed_dim", type=int, default=200, help='Dimensions for embeddings')
 train.add_argument("--lstm_dim", type=int, default=200, help='Dimensions for LSTM')
+train.add_argument("--dropout_rate", type=float, default=0.5, help='Rate for dropout layer')
 train.add_argument("--num_epochs", type=int, default=50, help='Num epochs')
 train.add_argument("--model_out", type=str, default="model", help='Name of output trained model file')
 
@@ -27,6 +29,8 @@ args = parser.parse_args()
 
 ################################################################################
 ## Validate arguments
+from generator.models import valid_models
+assert args.model_type in valid_models, "{0} is not a valid model, please use one of {1}".format(args.model_type, valid_models)
 assert (args.train or args.gen), "Choose either train or gen."
 if args.gen and not args.train:
     assert (args.model_file is not None), "Need pre-trained model file."
