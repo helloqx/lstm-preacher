@@ -28,12 +28,10 @@ class WordDict:
         return self.inv_dict[idx]
 
 
-def get_starter_phrase(vocab_file, phrase=None):
+def get_starter_phrase(vocab, phrase=None):
     if phrase is None:
         phrase = "主内弟兄姐妹平安。"
-    with open(vocab_file, 'rb') as vcb_file:
-        vocab = pk.load(vcb_file)
     starter = []
     for char in phrase:
-        starter.append(vocab.add_word(i))
+        starter.append(vocab.add_word(char))
     return starter
